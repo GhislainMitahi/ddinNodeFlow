@@ -1,8 +1,8 @@
 const axios = require('axios');
+const express = require('express');
 
 const apiEndpoint_level_1 = "https://test.ddin.rw/coretest/rest/members/me";
 
-const express = require('express');
 const router = express.Router();
 
 const userLoginController = async (req, res, next) => {
@@ -37,7 +37,7 @@ const userLoginController = async (req, res, next) => {
     // If the API returns a successful response (e.g., status code 200), you can handle it here
     // For example, you can send a success response back to the frontend or perform any other necessary actions.
     const userInfo = response.data;
-    console.log(userInfo)
+    // console.log(userInfo)
     res.status(200).json(userInfo);
     // res.render('index', { title: 'Express users' });
   } catch (error) {
