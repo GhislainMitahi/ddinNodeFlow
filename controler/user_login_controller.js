@@ -1,7 +1,9 @@
 const axios = require('axios');
 const express = require('express');
+const dotenv = require('dotenv');
+dotenv.config();
 
-const apiEndpoint_level_1 = "https://test.ddin.rw/coretest/rest/members/me";
+const apiEndpoint_level_1 = process.env.APILEVELONE;
 
 const router = express.Router();
 
@@ -9,8 +11,6 @@ const userLoginController = async (req, res, next) => {
   try {
     // Get the Authorization header from the request headers (use lowercase 'authorization')
     const authHeader = req.headers.authorization;
-
-    console.log(`here is it : ${authHeader}`);
 
     if (!authHeader || !authHeader.startsWith('Basic ')) {
       return res.status(401).json({ error: 'Unauthorized' });
