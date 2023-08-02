@@ -1,5 +1,4 @@
 const axios = require('axios');
-const express = require('express');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -16,6 +15,8 @@ const userLoginController = async (req, res, next) => {
 
     const base64Credentials = authHeader.split(' ')[1];
 
+    console.log("-=================>", base64Credentials)
+
     const credentials = Buffer.from(base64Credentials, 'base64').toString('utf-8');
 
     const [username, password] = credentials.split(':');
@@ -25,6 +26,7 @@ const userLoginController = async (req, res, next) => {
     const authHeaderForAPI = {
       Authorization: `Basic ${base64Credentials}`,
     };
+    console.log("---------------->",authHeaderForAPI.Authorization)
 
     const response = await axios.get(apiEndpoint_level_1, { headers: authHeaderForAPI });
 
