@@ -38,7 +38,7 @@ npo_to_register_data.user.password = "";
 
     const mpPosteApiResponse = await axios.post(
       url_mpost,
-      npo_to_register_data || dataBody,
+      npo_to_register_data,
       {
         headers: { "api-key": api_key },
       }
