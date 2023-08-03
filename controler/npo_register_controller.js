@@ -1,16 +1,44 @@
-const axios = require("axios");
+const axios = require('axios');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const npoRegisterController = async (req, res, next) => {
   try {
-    const api_key = "bf30616e-5be7-4310-b1f7-7da752a51d3f";
-    const name = "mposte";
-    const password = "mposte@250!";
-    const url =
-      "https://test.ddin.rw/coretest/rest/payments/confirmMemberPayment";
+const dataBody = req.body;
+const npo_to_register_data = {
+  postal_code_id: "",
+is_personal: "",
+user:{
+          first_name :"",
+          last_name : "",
+          middle_name:"",
+          mobile :"",
+          email: "",
+          nationa_id_number: "",
+          passport_number: "",
+          password:""
+    }};
+
+npo_to_register_data.postal_code_id = dataBody.postalCodeId;
+npo_to_register_data.is_personal = dataBody.isPersonal;
+npo_to_register_data.user.first_name = dataBody.firstName;
+npo_to_register_data.user.last_name = dataBody.lastName;
+npo_to_register_data.user.middle_name = dataBody.middleName;
+npo_to_register_data.user.mobile = dataBody.mobile;
+npo_to_register_data.user.email = dataBody.email;
+npo_to_register_data.user.nationa_id_number = dataBody.nationalIdNumber;
+npo_to_register_data.user.passport_number = dataBody.passportNumber;
+npo_to_register_data.user.password = "";
+
+    const api_key = process.env.API_KEY;
+    const name = process.env.MPOST_NAME;
+    const password = process.env.MPOST_PASSWORD;
+    const url_core_test = process.env.URL_CORE_TEST;
+    const url_mpost = process.env.URL_MPOST
 
     const mpPosteApiResponse = await axios.post(
-      "https://www.mpost-app.co.ke/api/client/virtual-addresses",
-      req.body,
+      url_mpost,
+      npo_to_register_data || dataBody,
       {
         headers: { "api-key": api_key },
       }
@@ -23,12 +51,6 @@ const npoRegisterController = async (req, res, next) => {
     const email = mpPosteApiResponse.data.user.email;
 
     const apiL1Body = {
-      amount: "2000",
-      description:
-        "MPOSTE Client Registration Commission Declaration(API LEVEL 1)",
-      currencySymbol: "Rwf",
-      transferTypeId: "42",
-      toMemberId: "21",
       customValues: [
         {
           internalName: "client_firstname",
@@ -99,6 +121,11 @@ const npoRegisterController = async (req, res, next) => {
       ],
     };
 
+    apiL1Body.amount = dataBody.amount;
+    apiL1Body.description = dataBody.description;
+    apiL1Body.currencySymbol = dataBody.currencySymbol;
+    apiL1Body.transferTypeId = dataBody.transferTypeId;
+    apiL1Body.toMemberId = dataBody.toMemberId;
     apiL1Body.customValues.find(
       (cv) => cv.internalName === "mpost_client_id"
     ).value = clientID.toString();
@@ -114,10 +141,8 @@ const npoRegisterController = async (req, res, next) => {
     apiL1Body.customValues.find(
       (cv) => cv.internalName === "client_email"
     ).value = email;
-
-    console.log("----->", apiL1Body);
+  
     const jsonapiL1Body = JSON.stringify(apiL1Body);
-    console.log("hellllloooooooo ========>>> json ",jsonapiL1Body);
 
     const basicToken = Buffer.from(`${name}:${password}`).toString("base64");
     const headers = {
@@ -125,15 +150,11 @@ const npoRegisterController = async (req, res, next) => {
       "Content-Type": "application/json",
     };
 
-    const cyclosApiResponse = await axios.post(url, jsonapiL1Body, {
+    const cyclosApiResponse = await axios.post(url_core_test, jsonapiL1Body, {
       headers,
     });
 
     const transactionID = cyclosApiResponse.data.id;
-    console.log(
-      "-------------------------------->>>>>>>>>>>>>> transation id",
-      transactionID
-    );
 
     res.json({
       transactionID,
