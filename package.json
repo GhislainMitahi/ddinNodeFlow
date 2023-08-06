@@ -2,6 +2,9 @@
   "name": "ddinnodeflow",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": ">=14 <15"
+  },
   
   "scripts": {
     "start": "nodemon ./bin/www",
