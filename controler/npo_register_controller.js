@@ -5,6 +5,8 @@ dotenv.config();
 const npoRegisterController = async (req, res, next) => {
   try {
 const dataBody = req.body;
+console.log("Here is the data we get from Agent App : ", dataBody);
+
 const npo_to_register_data = {
   postal_code_id: "",
 is_personal: "",
@@ -25,16 +27,18 @@ npo_to_register_data.user.first_name = dataBody.firstName;
 npo_to_register_data.user.last_name = dataBody.lastName;
 npo_to_register_data.user.middle_name = dataBody.middleName;
 npo_to_register_data.user.mobile = dataBody.mobile;
-npo_to_register_data.user.email = dataBody.email;
+npo_to_register_data.user.email = dataBody.clientEmail;
 npo_to_register_data.user.nationa_id_number = dataBody.nationalIdNumber;
 npo_to_register_data.user.passport_number = dataBody.passportNumber;
 npo_to_register_data.user.password = "";
+
+console.log("Here is that we have to send to Mposte Api: ", npo_to_register_data);
 
     const api_key = process.env.API_KEY;
     const name = process.env.MPOST_NAME;
     const password = process.env.MPOST_PASSWORD;
     const url_core_test = process.env.URL_CORE_TEST;
-    const url_mpost = process.env.URL_MPOST
+    const url_mpost = process.env.URL_MPOST;
 
     const mpPosteApiResponse = await axios.post(
       url_mpost,
@@ -43,6 +47,9 @@ npo_to_register_data.user.password = "";
         headers: { "api-key": api_key },
       }
     );
+
+
+    console.log("This is what we're getting back from Mposte Api", mpPosteApiResponse)
 
     const clientID = mpPosteApiResponse.data.user.id;
     const firstName = mpPosteApiResponse.data.user.first_name;
@@ -144,6 +151,8 @@ npo_to_register_data.user.password = "";
   
     const jsonapiL1Body = JSON.stringify(apiL1Body);
 
+    console.log("Here is that we are going to pass through out the DDINCyclos", jsonapiL1Body);
+
     const basicToken = Buffer.from(`${name}:${password}`).toString("base64");
     const headers = {
       Authorization: `Basic ${basicToken}`,
@@ -166,5 +175,7 @@ npo_to_register_data.user.password = "";
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+
 
 module.exports = npoRegisterController;
