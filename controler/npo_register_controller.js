@@ -5,7 +5,6 @@ dotenv.config();
 const npoRegisterController = async (req, res, next) => {
   try {
 const dataBody = req.body;
-console.log("Here is the data we get from Agent App : ", dataBody);
 
 const npo_to_register_data = {
   postal_code_id: "",
@@ -16,23 +15,21 @@ user:{
           middle_name:"",
           mobile :"",
           email: "",
-          nationa_id_number: "",
+          national_id_number: "",
           passport_number: "",
           password:""
     }};
 
-npo_to_register_data.postal_code_id = dataBody.postalCodeId;
-npo_to_register_data.is_personal = dataBody.isPersonal;
-npo_to_register_data.user.first_name = dataBody.firstName;
-npo_to_register_data.user.last_name = dataBody.lastName;
-npo_to_register_data.user.middle_name = dataBody.middleName;
-npo_to_register_data.user.mobile = dataBody.mobile;
-npo_to_register_data.user.email = dataBody.clientEmail;
-npo_to_register_data.user.nationa_id_number = dataBody.nationalIdNumber;
-npo_to_register_data.user.passport_number = dataBody.passportNumber;
-npo_to_register_data.user.password = "";
-
-console.log("Here is that we have to send to Mposte Api: ", npo_to_register_data);
+    npo_to_register_data.postal_code_id = dataBody.postalCodeId;
+    npo_to_register_data.is_personal = dataBody.isPersonal;
+    npo_to_register_data.user.first_name = dataBody.firstName;
+    npo_to_register_data.user.last_name = dataBody.lastName;
+    npo_to_register_data.user.middle_name = dataBody.middleName;
+    npo_to_register_data.user.mobile = dataBody.mobile;
+    npo_to_register_data.user.email = dataBody.clientEmail;
+    npo_to_register_data.user.national_id_number = dataBody.nationalIdNumber;
+    npo_to_register_data.user.passport_number = dataBody.passportNumber;
+    npo_to_register_data.user.password = "";
 
     const api_key = process.env.API_KEY;
     const name = process.env.MPOST_NAME;
@@ -47,9 +44,6 @@ console.log("Here is that we have to send to Mposte Api: ", npo_to_register_data
         headers: { "api-key": api_key },
       }
     );
-
-
-    console.log("This is what we're getting back from Mposte Api", mpPosteApiResponse)
 
     const clientID = mpPosteApiResponse.data.user.id;
     const firstName = mpPosteApiResponse.data.user.first_name;
@@ -151,8 +145,6 @@ console.log("Here is that we have to send to Mposte Api: ", npo_to_register_data
   
     const jsonapiL1Body = JSON.stringify(apiL1Body);
 
-    console.log("Here is that we are going to pass through out the DDINCyclos", jsonapiL1Body);
-
     const basicToken = Buffer.from(`${name}:${password}`).toString("base64");
     const headers = {
       Authorization: `Basic ${basicToken}`,
@@ -175,7 +167,5 @@ console.log("Here is that we have to send to Mposte Api: ", npo_to_register_data
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
-
 
 module.exports = npoRegisterController;
