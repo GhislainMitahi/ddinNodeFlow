@@ -5,6 +5,7 @@ dotenv.config();
 const npoRegisterController = async (req, res, next) => {
   try {
 const dataBody = req.body;
+
 const npo_to_register_data = {
   postal_code_id: "",
 is_personal: "",
@@ -14,27 +15,27 @@ user:{
           middle_name:"",
           mobile :"",
           email: "",
-          nationa_id_number: "",
+          national_id_number: "",
           passport_number: "",
           password:""
     }};
 
-npo_to_register_data.postal_code_id = dataBody.postalCodeId;
-npo_to_register_data.is_personal = dataBody.isPersonal;
-npo_to_register_data.user.first_name = dataBody.firstName;
-npo_to_register_data.user.last_name = dataBody.lastName;
-npo_to_register_data.user.middle_name = dataBody.middleName;
-npo_to_register_data.user.mobile = dataBody.mobile;
-npo_to_register_data.user.email = dataBody.email;
-npo_to_register_data.user.nationa_id_number = dataBody.nationalIdNumber;
-npo_to_register_data.user.passport_number = dataBody.passportNumber;
-npo_to_register_data.user.password = "";
+    npo_to_register_data.postal_code_id = dataBody.postalCodeId;
+    npo_to_register_data.is_personal = dataBody.isPersonal;
+    npo_to_register_data.user.first_name = dataBody.firstName;
+    npo_to_register_data.user.last_name = dataBody.lastName;
+    npo_to_register_data.user.middle_name = dataBody.middleName;
+    npo_to_register_data.user.mobile = dataBody.mobile;
+    npo_to_register_data.user.email = dataBody.clientEmail;
+    npo_to_register_data.user.national_id_number = dataBody.nationalIdNumber;
+    npo_to_register_data.user.passport_number = dataBody.passportNumber;
+    npo_to_register_data.user.password = "";
 
     const api_key = process.env.API_KEY;
     const name = process.env.MPOST_NAME;
     const password = process.env.MPOST_PASSWORD;
     const url_core_test = process.env.URL_CORE_TEST;
-    const url_mpost = process.env.URL_MPOST
+    const url_mpost = process.env.URL_MPOST;
 
     const mpPosteApiResponse = await axios.post(
       url_mpost,
