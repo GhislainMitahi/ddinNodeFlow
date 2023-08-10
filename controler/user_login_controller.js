@@ -12,15 +12,17 @@ const userLoginController = async (req, res, next) => {
     if (!authHeader || !authHeader.startsWith('Basic ')) {
 
     const ErrorDate = error.response.headers
+
     const errResponse = {
-      responseCode : error.response.status,
-      codeDescription : "Authentication failed. Username /password is incorrect. Please try again with correct credentials.",
-      communicationStatus : "FAILURE",
-      data : error.response.data,
-      metadata : "",
-      responseDate: ErrorDate.date
+       responseCode: error.response?.status || 500,
+       codeDescription: "An error occurred.",
+       communicationStatus: "FAILURE",
+       data: error.response?.data || "Internal Server Error",
+       metadata: "",
+       responseDate: new Date().toLocaleString(),
     }
-      return res.status(401).json(errResponse);
+    console.error('Error during API request:', errResponse);
+    return res.status(401).json(errResponse);
     }
 
     const base64Credentials = authHeader.split(' ')[1];
@@ -103,20 +105,17 @@ userInfo.data.agentCategory = response.data.customValues.find(
 
 res.status(200).json(userInfo);
 } catch (error) {
-
-  const ErrorDate = error.response.headers
-    const errResponse = {
-      responseCode : error.response.status,
-      codeDescription : "Authentication failed. Username /password is incorrect. Please try again with correct credentials.",
-      communicationStatus : "FAILURE",
-      data : error.response.data,
-      metadata : "",
-      responseDate: ErrorDate.date
-    }
-    
-    console.error('Error during user login:', errResponse);
-    res.status(errResponse ? error.response.status : 500).json({ error: 'User login failed' });
-  }
+  const errResponse = {
+     responseCode: error.response?.status || 500,
+     codeDescription: "An error occurred.",
+     communicationStatus: "FAILURE",
+     data: error.response?.data || "Internal Server Error",
+     metadata: "",
+     responseDate: new Date().toLocaleString(),
+  };
+  console.error('Error during API request:', errResponse);
+  res.status(errResponse.responseCode).json(errResponse);
+}
 };
 
 module.exports = userLoginController;
