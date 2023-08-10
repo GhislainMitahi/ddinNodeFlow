@@ -164,16 +164,16 @@ user:{
     });
   } catch (error) {
     const errResponse = {
-      responseCode : error.response.status,
-      codeDescription : "Authentication failed. Username /password is incorrect. Please try again with correct credentials.",
-      communicationStatus : "FAILURE",
-      data : error.response.data,
-      metadata : "",
-      responseDate: ErrorDate.date
-    }
-    console.error('Error during user login:', errResponse);
-    res.status(errResponse ? error.response.status : 500).json({ error: "Internal Server Error" });
-  }
+       responseCode: error.response?.status || 500,
+       codeDescription: "An error occurred.",
+       communicationStatus: "FAILURE",
+       data: error.response?.data || "Internal Server Error",
+       metadata: "",
+       responseDate: new Date().toLocaleString(),
+    };
+    console.error('Error during API request:', errResponse);
+    res.status(errResponse.responseCode).json(errResponse);
+ }
 };
 
 module.exports = npoRegisterController;
