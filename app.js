@@ -24,7 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // CORS middleware
 app.use(cors({
-  origin: 'https://ddinassone.netlify.app',
+  origin: 'http://localhost:3000',
   credentials: true,
 }));
 
