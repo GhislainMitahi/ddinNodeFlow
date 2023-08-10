@@ -163,8 +163,16 @@ user:{
       message: "Registration successful!",
     });
   } catch (error) {
-    console.error("Error during API integration:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    const errResponse = {
+      responseCode : error.response.status,
+      codeDescription : "Authentication failed. Username /password is incorrect. Please try again with correct credentials.",
+      communicationStatus : "FAILURE",
+      data : error.response.data,
+      metadata : "",
+      responseDate: ErrorDate.date
+    }
+    console.error('Error during user login:', errResponse);
+    res.status(errResponse ? error.response.status : 500).json({ error: "Internal Server Error" });
   }
 };
 

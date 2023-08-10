@@ -8,6 +8,7 @@ const cors = require('cors');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var npoRouter = require('./routes/nporegister');
+var officeCodeRouter = require('./routes/officeCodeRouter');
 
 var app = express();
 
@@ -23,7 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // CORS middleware
 app.use(cors({
-  origin: 'https://ddinassone.netlify.app',
+  origin: 'http://localhost:3000',
   credentials: true,
 }));
 
@@ -31,6 +32,7 @@ app.use(cors({
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/pindo', npoRouter);
+app.use('/officecode', officeCodeRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
