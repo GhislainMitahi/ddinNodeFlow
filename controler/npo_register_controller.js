@@ -40,7 +40,7 @@ user:{
 
     console.log("Here then is the data npo_to_register_data ",npo_to_register_data)
     const mpPosteApiResponse = await axios.post(
-      url_mpost,
+      'https://www.mpost-app.co.ke/api/client/virtual-addresses',
       npo_to_register_data,
       {
         headers: { "api-key": api_key },
