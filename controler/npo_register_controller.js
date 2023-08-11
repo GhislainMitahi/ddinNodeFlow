@@ -6,6 +6,7 @@ const npoRegisterController = async (req, res, next) => {
   try {
 const dataBody = req.body;
 
+console.log("The data i'm getting from netlify agent app dataBody", dataBody)
 const npo_to_register_data = {
   postal_code_id: "",
 is_personal: "",
@@ -37,6 +38,7 @@ user:{
     const url_core_test = process.env.URL_CORE_TEST;
     const url_mpost = process.env.URL_MPOST;
 
+    console.log("Here then is the data npo_to_register_data ",npo_to_register_data)
     const mpPosteApiResponse = await axios.post(
       url_mpost,
       npo_to_register_data,
@@ -45,12 +47,15 @@ user:{
       }
     );
 
+    console.log("Here is the data  mpPosteApiResponse", mpPosteApiResponse)
+
     const clientID = mpPosteApiResponse.data.user.id;
     const firstName = mpPosteApiResponse.data.user.first_name;
     const lastName = mpPosteApiResponse.data.user.last_name;
     const mobile = mpPosteApiResponse.data.user.mobile;
     const email = mpPosteApiResponse.data.user.email;
 
+    console.log()
     const apiL1Body = {
       customValues: [
         {
@@ -142,6 +147,8 @@ user:{
     apiL1Body.customValues.find(
       (cv) => cv.internalName === "client_email"
     ).value = email;
+
+    console.log("and Here is the data i'm getting from apiL1Body data formated ", apiL1Body)
   
     const jsonapiL1Body = JSON.stringify(apiL1Body);
 
@@ -154,6 +161,8 @@ user:{
     const cyclosApiResponse = await axios.post(url_core_test, jsonapiL1Body, {
       headers,
     });
+
+   console.log("And Here is the data i'm Getting from the client registration on core cyclos cyclosApiResponse ", cyclosApiResponse)
 
     const transactionID = cyclosApiResponse.data.id;
 
