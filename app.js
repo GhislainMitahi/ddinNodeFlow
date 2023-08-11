@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
+const dotenv = require('dotenv');
+dotenv.config();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -24,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // CORS middleware
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: process.env.ORIGIN_URL,
   credentials: true,
 }));
 

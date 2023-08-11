@@ -171,7 +171,7 @@ user:{
        metadata: "",
        responseDate: new Date().toLocaleString(),
     };
-    console.error('Error during API request:', errResponse);
+    console.error('Error during API request:', error);
     res.status(errResponse.responseCode).json(errResponse);
  }
 };
