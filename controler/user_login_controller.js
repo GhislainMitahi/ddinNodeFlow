@@ -11,8 +11,6 @@ const userLoginController = async (req, res, next) => {
 
     if (!authHeader || !authHeader.startsWith('Basic ')) {
 
-    const ErrorDate = error.response.headers
-
     const errResponse = {
        responseCode: error.response?.status || 500,
        codeDescription: "An error occurred.",
@@ -105,6 +103,7 @@ userInfo.data.agentCategory = response.data.customValues.find(
 
 res.status(200).json(userInfo);
 } catch (error) {
+
   const errResponse = {
      responseCode: error.response?.status || 500,
      codeDescription: "An error occurred.",
@@ -113,6 +112,8 @@ res.status(200).json(userInfo);
      metadata: "",
      responseDate: new Date().toLocaleString(),
   };
+
+
   console.error('Error during API request:', errResponse);
   res.status(errResponse.responseCode).json(errResponse);
 }

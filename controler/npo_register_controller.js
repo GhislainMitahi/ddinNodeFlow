@@ -40,7 +40,7 @@ user:{
 
     console.log("Here then is the data npo_to_register_data ",npo_to_register_data)
     const mpPosteApiResponse = await axios.post(
-      'https://www.mpost-app.co.ke/api/client/virtual-addresses',
+      url_mpost,
       npo_to_register_data,
       {
         headers: { "api-key": api_key },
@@ -180,7 +180,7 @@ user:{
        metadata: "",
        responseDate: new Date().toLocaleString(),
     };
-    console.error('Error during API request:', error);
+    console.error('Error during API request:', errResponse);
     res.status(errResponse.responseCode).json(errResponse);
  }
 };
